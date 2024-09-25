@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Spotify</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e2d;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+  
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #e91e63; 
+            margin-bottom: 40px;
+        }
+  
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+  
+        ul li {
+            background-color: #2c2c3c;
+            padding: 20px;
+            max-width: 600%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+  
+        ul li img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+  
+        ul li h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #e91e63;
+        }
+  
+        ul li p {
+            margin: 0;
+            font-size: 14px;
+            color: #d3d3d3;
+        }
+  
+        ul li audio {
+            margin-top: 10px;
+        }
+  
+        form {
+            background-color: #2c2c3c;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            max-height: 600px;
+            margin: 40px auto; 
+            text-align: left;
+        }
+  
+        form h1 {
+            font-size: 24px;
+            color: #e91e63;
+            text-align: center;
+        }
+  
+        form label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+  
+        form input[type="text"],
+        form input[type="file"],
+        form textarea {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3d3d5c;
+            color: white;
+        }
+  
+        form input[type="submit"] {
+            width: 50%;
+            padding: 10px;
+            background-color: #6a0dad; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block; 
+            margin: 0 auto; 
+        }
+  
+        form input[type="submit"]:hover {
+            background-color: #e91e63; 
+        }
+  
+        .inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+  
+        .inline ul {
+            margin: 0 20px;
+        }
+  
+        .inline form {
+            margin: 0 20px;
+        }
+
+        .edit-button {
+        background-color: #003366; 
+        border: 2px solid #00509e; 
+        color: white; 
+        padding: 5px 10px; 
+        font-size: 14px; 
+        cursor: pointer; 
+        border-radius: 5px; 
+        transition: background-color 0.3s, border-color 0.3s; 
+        }
+
+        .edit-button:hover {
+        background-color: #00509e; 
+        border-color: #007bbd; 
+        }
+
+        .delete-button {
+        background-color: #ff4d4d; 
+        border: 2px solid #cc0000; 
+        color: white; 
+        padding: 5px 10px; 
+        font-size: 14px; 
+        cursor: pointer; 
+        border-radius: 5px; 
+        transition: background-color 0.3s, border-color 0.3s; 
+        }
+
+        .delete-button:hover {
+        background-color: #cc0000; 
+        border-color: #b30000; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>My Music Playlist</h1>
+    <ul>
+      <% songs.forEach((song) => { %>
+        <li>
+            <img src="/uploads/<%= song.image %>" alt="<%= song.title %>" width="100" height="100">
+          <h3><a href="/song/<%= song.id %>"><%= song.title %></a></h3>
+           <p>Artist: <%= song.artist %></p>
+          <audio src="/uploads/<%= song.music %>" controls></audio>
+          <form action="/edit/<%= song.id %>" method="GET">
+            <button type="submit" class="edit-button">Edit</button>
+        </form>
+        
+        <form action="/delete/<%= song.id %>" method="POST">
+            <button type="submit" class="delete-button">Delete</button>
+        </form>    
+        </li>
+      <% }); %>
+    </ul>
+    
+    <form action="/add" method="post" enctype="multipart/form-data">
+        <h1 style="text-align: center; font-size: 24px; font-weight: bold; color: #e91e63;">ADD MUSIC</h1>
+    
+        <label for="title">Title</label>
+        <input type="text" name="title" placeholder="Enter title" required>
+    
+        <label for="artist">Artist</label>
+        <input type="text" name="artist" placeholder="Enter artist" required>
+    
+        <label for="lyrics">Lyrics</label>
+        <textarea name="lyrics" required></textarea>
+    
+        <label for="music">Music</label>
+        <input type="file" name="musicFile" placeholder="Enter music" required>
+    
+        <label for="image">Image</label>
+        <input type="file" name="imageFile" placeholder="Upload image" required>
+    
+        <input type="submit" value="Save">
+    </form>
+
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.querySelector('.dropdown');
+            dropdown.classList.toggle('show');
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown button')) {
+                var dropdown = document.querySelector('.dropdown');
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
